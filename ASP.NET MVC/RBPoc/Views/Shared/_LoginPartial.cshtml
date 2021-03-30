@@ -23,7 +23,9 @@
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Sign up / Sign in", "SignUpSignIn", "Account", routeValues: null, htmlAttributes: new { id = "signUpSignInLink" })</li>
-    </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li>@Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "signUpLink" })</li>
+
+            <li>@Html.ActionLink("Sign in", "SignIn", "Account", routeValues: null, htmlAttributes: new { id = "signInLink" })</li>
+        </ul>
 }

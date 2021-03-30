@@ -11,6 +11,8 @@ namespace RBPoc.Utils
         // App config settings
         public static string ClientId = ConfigurationManager.AppSettings["ida:ClientId"];
         public static string ClientSecret = ConfigurationManager.AppSettings["ida:ClientSecret"];
+        public static string RoleClientId = ConfigurationManager.AppSettings["ida:RoleClientId"];
+        public static string RoleClientSecret = ConfigurationManager.AppSettings["ida:RoleClientSecret"];
         public static string AadInstance = ConfigurationManager.AppSettings["ida:AadInstance"];
         public static string Tenant = ConfigurationManager.AppSettings["ida:Tenant"];
         public static string TenantId = ConfigurationManager.AppSettings["ida:TenantId"];
@@ -18,11 +20,12 @@ namespace RBPoc.Utils
         public static string ServiceUrl = ConfigurationManager.AppSettings["api:TaskServiceUrl"];
 
         // B2C policy identifiers
-        public static string SignUpSignInPolicyId = ConfigurationManager.AppSettings["ida:SignUpSignInPolicyId"];
+        public static string SignUpPolicyId = ConfigurationManager.AppSettings["ida:SignUpPolicyId"];
+        public static string SignInPolicyId = ConfigurationManager.AppSettings["ida:SignInPolicyId"];
         public static string EditProfilePolicyId = ConfigurationManager.AppSettings["ida:EditProfilePolicyId"];
         public static string ResetPasswordPolicyId = ConfigurationManager.AppSettings["ida:ResetPasswordPolicyId"];
 
-        public static string DefaultPolicy = SignUpSignInPolicyId;
+        public static string DefaultPolicy = SignInPolicyId;
 
         // API Scopes
         public static string ApiIdentifier = ConfigurationManager.AppSettings["api:ApiIdentifier"];

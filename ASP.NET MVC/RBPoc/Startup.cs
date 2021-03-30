@@ -59,8 +59,7 @@ namespace RBPoc
                     {
                         RedirectToIdentityProvider = OnRedirectToIdentityProvider,
                         AuthorizationCodeReceived = OnAuthorizationCodeReceived,
-                        AuthenticationFailed = OnAuthenticationFailed,
-
+                        AuthenticationFailed = OnAuthenticationFailed                       
                     },
 
                     // Specify the claim type that specifies the Name property.
@@ -86,13 +85,67 @@ namespace RBPoc
          */
         private Task OnRedirectToIdentityProvider(RedirectToIdentityProviderNotification<OpenIdConnectMessage, OpenIdConnectAuthenticationOptions> notification)
         {
-            var policy = notification.OwinContext.Get<string>("Policy");
 
-            if (!string.IsNullOrEmpty(policy) && !policy.Equals(Globals.DefaultPolicy))
+            if(notification.Request.Path.Value == "/Account/SignUp")
             {
-                notification.ProtocolMessage.Scope = OpenIdConnectScope.OpenId;
-                notification.ProtocolMessage.ResponseType = OpenIdConnectResponseType.IdToken;
-                notification.ProtocolMessage.IssuerAddress = notification.ProtocolMessage.IssuerAddress.ToLower().Replace(Globals.DefaultPolicy.ToLower(), policy.ToLower());
+                var policy = notification.OwinContext.Get<string>("Policy");
+
+                if (!string.IsNullOrEmpty(policy) && !policy.Equals(Globals.DefaultPolicy))
+                {
+                    //notification.ProtocolMessage.Scope = OpenIdConnectScope.OpenId;
+                    //notification.ProtocolMessage.ResponseType = OpenIdConnectResponseType.IdToken;
+                    notification.ProtocolMessage.IssuerAddress = notification.ProtocolMessage.IssuerAddress.ToLower().Replace(Globals.DefaultPolicy.ToLower(), policy.ToLower());
+                }
+            }
+            else if(notification.Request.Path.Value == "/Account/SignIn")
+            {
+                var policy = notification.OwinContext.Get<string>("Policy");
+
+                if (!string.IsNullOrEmpty(policy) && !policy.Equals(Globals.DefaultPolicy))
+                {
+                    //notification.ProtocolMessage.Scope = OpenIdConnectScope.OpenId;
+                    //notification.ProtocolMessage.ResponseType = OpenIdConnectResponseType.IdToken;
+                    notification.ProtocolMessage.IssuerAddress = notification.ProtocolMessage.IssuerAddress.ToLower().Replace(Globals.DefaultPolicy.ToLower(), policy.ToLower());
+                }
+            }
+            else if (notification.Request.Path.Value == "/Account/EditProfile")
+            {
+                var policy = notification.OwinContext.Get<string>("Policy");
+
+                if (!string.IsNullOrEmpty(policy) && !policy.Equals(Globals.DefaultPolicy))
+                {
+                    //notification.ProtocolMessage.Scope = OpenIdConnectScope.OpenId;
+                    //notification.ProtocolMessage.ResponseType = OpenIdConnectResponseType.IdToken;
+                    notification.ProtocolMessage.IssuerAddress = notification.ProtocolMessage.IssuerAddress.ToLower().Replace(Globals.DefaultPolicy.ToLower(), policy.ToLower());
+                }
+            }
+            else if (notification.Request.Path.Value == "/Account/ResetPassword")
+            {
+                var policy = notification.OwinContext.Get<string>("Policy");
+
+                if (!string.IsNullOrEmpty(policy) && !policy.Equals(Globals.DefaultPolicy))
+                {
+                    //notification.ProtocolMessage.Scope = OpenIdConnectScope.OpenId;
+                    //notification.ProtocolMessage.ResponseType = OpenIdConnectResponseType.IdToken;
+                    notification.ProtocolMessage.IssuerAddress = notification.ProtocolMessage.IssuerAddress.ToLower().Replace(Globals.DefaultPolicy.ToLower(), policy.ToLower());
+                }
+            }
+            else if (notification.Request.Path.Value == "/Account/SignOut")
+            {
+                var policy = notification.OwinContext.Get<string>("Policy");
+
+                if (!string.IsNullOrEmpty(policy) && !policy.Equals(Globals.DefaultPolicy))
+                {
+                    //notification.ProtocolMessage.Scope = OpenIdConnectScope.OpenId;
+                    //notification.ProtocolMessage.ResponseType = OpenIdConnectResponseType.IdToken;
+                    notification.ProtocolMessage.IssuerAddress = notification.ProtocolMessage.IssuerAddress.ToLower().Replace(Globals.DefaultPolicy.ToLower(), policy.ToLower());
+                }
+            }
+            else
+            {
+                notification.Response.StatusCode = 401;
+                notification.Response.Redirect("/Home/Error?message=Access Denied");
+                notification.HandleResponse();
             }
 
             return Task.FromResult(0);
@@ -134,20 +187,20 @@ namespace RBPoc
                 IConfidentialClientApplication confidentialClient = MsalAppBuilder.BuildConfidentialClientApplication(new ClaimsPrincipal(notification.AuthenticationTicket.Identity));
 
                 // Upon successful sign in, get & cache a token using MSAL
-                AuthenticationResult result = await confidentialClient.AcquireTokenByAuthorizationCode(Globals.Scopes, notification.Code).ExecuteAsync();
-                string token = result.AccessToken;
+                //AuthenticationResult result = await confidentialClient.AcquireTokenByAuthorizationCode(Globals.Scopes, notification.Code).ExecuteAsync();
+                //string token = result.AccessToken;
 
                 using (var client = new HttpClient())
                 {
 
-                    string tokenURL = "https://login.microsoftonline.com/skrnd.onmicrosoft.com/oauth2/v2.0/token";
+                    string tokenURL = "https://login.microsoftonline.com/rallycommunitas.onmicrosoft.com/oauth2/v2.0/token";
 
                     var requestContent = new FormUrlEncodedContent(new[]
                     {
                         new KeyValuePair<string, string>("grant_type", "client_credentials"),
-                        new KeyValuePair<string, string>("client_id", Globals.ClientId),
+                        new KeyValuePair<string, string>("client_id", Globals.RoleClientId),
                         new KeyValuePair<string, string>("scope", "https://graph.microsoft.com/.default"),
-                        new KeyValuePair<string, string>("client_secret", Globals.ClientSecret)
+                        new KeyValuePair<string, string>("client_secret", Globals.RoleClientSecret)
                     });
 
 

@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace RBPoc.Controllers
 {
-    [CheckRoles(Roles ="Administrator")]
+    [Authorize(Roles ="Administrator")]
     public class AdministratorController : Controller
     {
         // GET: Administrator

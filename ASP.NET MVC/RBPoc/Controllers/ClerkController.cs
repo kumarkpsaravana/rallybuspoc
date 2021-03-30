@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace RBPoc.Controllers
 {
-    [CheckRoles(Roles = "Administrator,Clerk")]
+    [Authorize(Roles = "Administrator,Clerk")]
     public class ClerkController : Controller
     {
         // GET: Clerk

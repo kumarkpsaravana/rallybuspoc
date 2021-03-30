@@ -8,14 +8,27 @@ using System.Web.Mvc;
 
 namespace RBPoc.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         /*
          *  Called when requesting to sign up or sign in
          */
-        public void SignUpSignIn(string redirectUrl)
+        [AllowAnonymous]
+        public void SignUp(string redirectUrl)
         {
             redirectUrl = redirectUrl ?? "/";
+            HttpContext.GetOwinContext().Set("Policy", Globals.SignUpPolicyId);
+
+            // Use the default policy to process the sign up / sign in flow
+            HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = redirectUrl });
+            return;
+        }
+
+        public void SignIn(string redirectUrl)
+        {
+            redirectUrl = redirectUrl ?? "/";
+            HttpContext.GetOwinContext().Set("Policy", Globals.SignInPolicyId);
 
             // Use the default policy to process the sign up / sign in flow
             HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = redirectUrl });
@@ -45,6 +58,7 @@ namespace RBPoc.Controllers
         /*
          *  Called when requesting to reset a password
          */
+        [AllowAnonymous]
         public void ResetPassword()
         {
             // Let the middleware know you are trying to use the reset password policy (see OnRedirectToIdentityProvider in Startup.Auth.cs)
